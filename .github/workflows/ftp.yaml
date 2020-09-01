@@ -22,10 +22,11 @@ jobs:
           PUBLICHOST: localhost
         options: >-
           --name=ftp
-          --health-cmd="ping localhost || exit 1"
+          --health-cmd="ftp -p localhost 21 || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
     steps:
       - uses: actions/checkout@v2
+      - name: upload file
            
