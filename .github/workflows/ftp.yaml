@@ -19,7 +19,6 @@ jobs:
           FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
           FTP_USER_PASS: ${{ env.FTP_USER_NAME }}
           FTP_USER_HOME: ${{ github.workspace }}/ftp
-          PUBLICHOST: localhost
         options: >-
           --name=ftp
           --health-cmd="ftp -p localhost 21 || exit 1"
