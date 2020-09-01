@@ -19,7 +19,7 @@ jobs:
           FTP_USER_HOME: ${{ github.workspace }}/ftp
         options: >-
           --name=ftp
-          --health-cmd="[ -z `echo quit | ftp ftp://$FTP_USER_NAME:$FTP_USER_PASS@127.0.0.1 22 2>&1` ] && echo "healthy" || echo "unhealthy" && exit 1"
+          --health-cmd="[ -z \"`echo quit | ftp ftp://$FTP_USER_NAME:$FTP_USER_PASS@127.0.0.1 22 2>&1`\" ] && exit 0 || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
