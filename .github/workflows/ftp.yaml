@@ -1,0 +1,31 @@
+name: FTP Test
+env:
+  FTP_USER_NAME: someuser
+  FTP_USER_PASS: somepassword
+on:
+  push:
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.5.0-alpine
+    services:
+      ftp-server:
+        image: stilliard/pure-ftpd
+        ports:
+          - 21:21
+          - 30000-30009:30000-30009
+        env:
+          FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
+          FTP_USER_PASS: ${{ env.FTP_USER_NAME }}
+          FTP_USER_HOME: ${{ github.workspace }}/ftp
+          PUBLICHOST: localhost
+        options: >-
+          --name=ftp
+          --health-cmd="ping localhost || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: actions/checkout@v2
+           
