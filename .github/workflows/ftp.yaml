@@ -13,15 +13,6 @@ jobs:
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
           local-dir: toupload
-      # - name: file*delete.md
-      #   uses: ./.github/actions/ftp-delete-action
-      #   with:
-      #     host: ftp-server
-      #     user: ${{ env.FTP_USER_NAME }}
-      #     password: ${{ env.FTP_USER_PASS }}
-      #     workingDir: data
-      #     ignoreSsl: 1
-      #     remoteFiles: "file*.!(keep).md"
 
 
            
