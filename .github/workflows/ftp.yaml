@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       ftp-server:
-        image: atmoz/sftp@latest
+        image: atmoz/sftp
         ports:
           - 2222:22
         options: >-
