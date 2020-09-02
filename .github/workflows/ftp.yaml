@@ -20,8 +20,8 @@ jobs:
         options: >-
           --name=ftp-server
           --health-cmd="[ -z \"`echo quit | ftp ftp://$FTP_USER_NAME:$FTP_USER_PASS@localhost 21 2>&1`\" ] && exit 0 || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
+          --health-interval=30s
+          --health-timeout=20s
           --health-retries=3
     steps:
       - uses: actions/checkout@v2
