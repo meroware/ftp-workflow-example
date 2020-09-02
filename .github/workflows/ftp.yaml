@@ -20,12 +20,12 @@ jobs:
           --health-timeout=5s
           --health-retries=3
         volumes:
-          - ${{ github.workspace }}/ftp:/ftp
+          - ${{ github.workspace }}/ftp:/data
         env:
           PUBLICHOST: "localhost"
           FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
           FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
-          FTP_USER_HOME: /ftp
+          FTP_USER_HOME: /data
     steps:
       - uses: actions/checkout@v2
       - name: Deploy FTP
@@ -34,16 +34,16 @@ jobs:
           host: ftp-server
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
-          localDir: to-upload
-          remoteDir: ftp
-      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
+          localDir: toupload
+          remoteDir: data
+      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/data
       - name: file*delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
           host: ftp-server
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
-          workingDir: /ftp
+          workingDir: data
           ignoreSsl: 1
           remoteFiles: "file*.!(keep).md"
 
