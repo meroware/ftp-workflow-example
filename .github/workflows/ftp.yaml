@@ -18,7 +18,7 @@ jobs:
           FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
           FTP_USER_HOME: ${{ github.workspace }}/ftp
         options: >-
-          --name=ftp
+          --name=ftp-server
           --health-cmd="exit 0"
           --health-interval=10s
           --health-timeout=5s
