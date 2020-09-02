@@ -35,7 +35,7 @@ jobs:
           remoteDir: .
       - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server:21 
       - name: file-*-delete.md
-        uses: StephanThierry/ftp-delete-action@releases/v1
+        uses: ./actions/ftp-delete-action
         with:
           host: ftp-server
           user: ${{ env.FTP_USER_NAME }}
