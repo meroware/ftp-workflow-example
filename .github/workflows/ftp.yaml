@@ -14,9 +14,9 @@ jobs:
           - 2222:22
         options: >-
           --name=ftp-server
-          --health-cmd="[ -z \"`echo quit | ftp $FTP_USER_NAME:$FTP_USER_PASS@localhost 22 2>&1`\" ] && exit 0 || exit 1"
-          --health-interval=30s
-          --health-timeout=20s
+          --health-cmd="[ -z \"`echo quit | sftp $FTP_USER_NAME:$FTP_USER_PASS@localhost 22 2>&1`\" ] && exit 0 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
           --health-retries=3
         volumes:
           - ${{ github.workspace }}/ftp/users.conf:/etc/sftp/users.conf
