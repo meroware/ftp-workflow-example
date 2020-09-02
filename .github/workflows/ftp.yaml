@@ -28,8 +28,8 @@ jobs:
           FTP_USER_HOME: /data
     steps:
       - uses: actions/checkout@v2
-      - run: echo "mput toupload/* | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp" 
-      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
+      - run: echo "mput toupload/*" | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
+      - run: echo "ls" | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
       - name: file*delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
