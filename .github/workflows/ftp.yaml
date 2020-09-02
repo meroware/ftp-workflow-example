@@ -9,9 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     services:
       ftp-server:
-        image: atmoz/sftp
+        image: stilliard/pure-ftpd
         ports:
-          - 2222:22
+          - "21:21"
+          - "30000-30009:30000-30009"
         options: >-
           --name=ftp-server
           --health-cmd="exit 0"
@@ -19,22 +20,27 @@ jobs:
           --health-timeout=5s
           --health-retries=3
         volumes:
-          - ${{ github.workspace }}/ftp/users.conf:/etc/sftp/users.conf
+          - ${{ github.workspace }}/ftp:/ftp
+        env:
+          PUBLICHOST: "localhost"
+          FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
+          FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
+          FTP_USER_HOME: /ftp
     steps:
       - uses: actions/checkout@v2
       - name: Deploy FTP
         uses: sebastianpopp/ftp-action@v2.0.0
         with:
-          host: ftp-server:2222
+          host: ftp-server
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
           localDir: to-upload
           remoteDir: .
-      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp:2222
+      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
       - name: file-*-delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
-          host: ftp-server:2222
+          host: ftp-server
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
           workingDir: .
