@@ -35,7 +35,7 @@ jobs:
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
           localDir: to-upload
-          remoteDir: .
+          remoteDir: ftp
       - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
       - name: file-*-delete.md
         uses: ./.github/actions/ftp-delete-action
