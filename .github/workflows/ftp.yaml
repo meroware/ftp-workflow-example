@@ -28,15 +28,8 @@ jobs:
           FTP_USER_HOME: /data
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy FTP
-        uses: sebastianpopp/ftp-action@v2.0.0
-        with:
-          host: ftp-server
-          user: ${{ env.FTP_USER_NAME }}
-          password: ${{ env.FTP_USER_PASS }}
-          localDir: toupload
-          remoteDir: data
-      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/data
+      - run: echo "mput toupload/* | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp" 
+      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
       - name: file*delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
