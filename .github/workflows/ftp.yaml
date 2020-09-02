@@ -1,44 +1,28 @@
 name: FTP Test
-env:
-  FTP_USER_NAME: meroware
-  FTP_USER_PASS: password
 on:
   push:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    services:
-      ftp-server:
-        image: stilliard/pure-ftpd
-        ports:
-          - "21:21"
-          - "30000-30009:30000-30009"
-        options: >-
-          --name=ftp-server
-          --health-cmd="exit 0"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-        volumes:
-          - ${{ github.workspace }}/ftp:/data
-        env:
-          PUBLICHOST: "localhost"
-          FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
-          FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
-          FTP_USER_HOME: /data
     steps:
       - uses: actions/checkout@v2
-      - run: echo "mput toupload/*" | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
-      - run: echo "ls" | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
-      - name: file*delete.md
-        uses: ./.github/actions/ftp-delete-action
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
-          host: ftp-server
-          user: ${{ env.FTP_USER_NAME }}
-          password: ${{ env.FTP_USER_PASS }}
-          workingDir: data
-          ignoreSsl: 1
-          remoteFiles: "file*.!(keep).md"
+          ftp-server: ${{ secrets.FTP_SERVER }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: toupload
+      # - run: echo "ls" | ftp ${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
+      # - name: file*delete.md
+      #   uses: ./.github/actions/ftp-delete-action
+      #   with:
+      #     host: ftp-server
+      #     user: ${{ env.FTP_USER_NAME }}
+      #     password: ${{ env.FTP_USER_PASS }}
+      #     workingDir: data
+      #     ignoreSsl: 1
+      #     remoteFiles: "file*.!(keep).md"
 
 
            
