@@ -1,7 +1,7 @@
 name: FTP Test
 env:
-  FTP_USER_NAME: someuser
-  FTP_USER_PASS: somepassword
+  FTP_USER_NAME: meroware
+  FTP_USER_PASS: password
 on:
   push:
 jobs:
@@ -9,23 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     services:
       ftp-server:
-        image: stilliard/pure-ftpd:latest
+        image: atmoz/sftp@latest
         ports:
-          - 21:21
-          - 30000-30009:30000-30009
-        env:
-          FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
-          FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
-          FTP_USER_HOME: ${{ github.workspace }}/ftp
+          - 2222:22
         options: >-
           --name=ftp-server
-          --health-cmd="exit 0"
+          --health-cmd="[ -z \"`echo quit | ftp ftp://$FTP_USER_NAME:$FTP_USER_PASS@localhost 21 2>&1`\" ] && exit 0 || exit 1"
           --health-interval=30s
           --health-timeout=20s
           --health-retries=3
+        volumes:
+          - ${{ github.workspace }}/ftp/users.conf:/etc/sftp/users.conf
     steps:
       - uses: actions/checkout@v2
-      - run: docker exec ftp-server "/run.sh -c 30 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb"
       - name: Deploy FTP
         uses: sebastianpopp/ftp-action@v2.0.0
         with:
@@ -34,7 +30,7 @@ jobs:
           password: ${{ env.FTP_USER_PASS }}
           localDir: to-upload
           remoteDir: .
-      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp
+      - run: echo ls | ftp ftp://${{ env.FTP_USER_NAME }}:${{ env.FTP_USER_PASS }}@ftp-server/ftp:22
       - name: file-*-delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
