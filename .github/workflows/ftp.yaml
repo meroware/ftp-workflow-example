@@ -15,7 +15,7 @@ jobs:
           - 30000-30009:30000-30009
         env:
           FTP_USER_NAME: ${{ env.FTP_USER_NAME }}
-          FTP_USER_PASS: ${{ env.FTP_USER_NAME }}
+          FTP_USER_PASS: ${{ env.FTP_USER_PASS }}
           FTP_USER_HOME: ${{ github.workspace }}/ftp
         options: >-
           --name=ftp
@@ -25,4 +25,11 @@ jobs:
           --health-retries=3
     steps:
       - uses: actions/checkout@v2
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+          ftp-server: ftp-server
+          ftp-username: ${{ env.FTP_USER_NAME }}
+          ftp-password: ${{ env.FTP_USER_PASS }}
+
            
