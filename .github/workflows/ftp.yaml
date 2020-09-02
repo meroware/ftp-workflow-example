@@ -25,7 +25,7 @@ jobs:
       - name: Deploy FTP
         uses: sebastianpopp/ftp-action@v2.0.0
         with:
-          host: ftp-server
+          host: ftp-server:2222
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
           localDir: to-upload
@@ -34,7 +34,7 @@ jobs:
       - name: file-*-delete.md
         uses: ./.github/actions/ftp-delete-action
         with:
-          host: ftp-server
+          host: ftp-server:2222
           user: ${{ env.FTP_USER_NAME }}
           password: ${{ env.FTP_USER_PASS }}
           workingDir: .
