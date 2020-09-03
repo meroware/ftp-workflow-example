@@ -1,4 +1,4 @@
-name: FTP Test
+name: FTP Test root upload
 on:
   push:
 jobs:
