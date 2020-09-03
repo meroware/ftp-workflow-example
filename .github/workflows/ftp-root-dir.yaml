@@ -12,7 +12,7 @@ jobs:
           echo APP_DEBUG=false >> .env
           echo DB_USERNAME=test_username >> .env
           echo DB_PASSWORD=some_password >> .env
-          git ftp init
+          echo ".env" > .git-ftp-include # Add git untracked file
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
